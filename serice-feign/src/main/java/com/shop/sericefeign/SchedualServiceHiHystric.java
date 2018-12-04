@@ -2,7 +2,7 @@ package com.shop.sericefeign;
 
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class SchedualServiceHiHystric implements SchedualServiceHi {
     @Override
     public String sayHiFromClientOne(String name) {
