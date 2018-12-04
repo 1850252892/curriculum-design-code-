@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.module.user.dao.BuyerUserMapper" >
+  <resultMap id="BaseResultMap" type="com.shop.module.user.entity.BuyerUser" >
+    <id column="buyer_id" property="buyerId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="integral" property="integral" jdbcType="INTEGER" />
+    <result column="level_id" property="levelId" jdbcType="INTEGER" />
+    <result column="balance" property="balance" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    buyer_id, user_id, integral, level_id, balance, status, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_buyer
+    where buyer_id = #{buyerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_user_buyer
+    where buyer_id = #{buyerId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.shop.module.user.entity.BuyerUser" >
+    insert into tb_user_buyer (buyer_id, user_id, integral, 
+      level_id, balance, status, 
+      create_time)
+    values (#{buyerId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{integral,jdbcType=INTEGER},
+      #{levelId,jdbcType=INTEGER}, #{balance,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.shop.module.user.entity.BuyerUser" >
+    insert into tb_user_buyer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="buyerId != null" >
+        buyer_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="integral != null" >
+        integral,
+      </if>
+      <if test="levelId != null" >
+        level_id,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="buyerId != null" >
+        #{buyerId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="integral != null" >
+        #{integral,jdbcType=INTEGER},
+      </if>
+      <if test="levelId != null" >
+        #{levelId,jdbcType=INTEGER},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.shop.module.user.entity.BuyerUser" >
+    update tb_user_buyer
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="integral != null" >
+        integral = #{integral,jdbcType=INTEGER},
+      </if>
+      <if test="levelId != null" >
+        level_id = #{levelId,jdbcType=INTEGER},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where buyer_id = #{buyerId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.shop.module.user.entity.BuyerUser" >
+    update tb_user_buyer
+    set user_id = #{userId,jdbcType=INTEGER},
+      integral = #{integral,jdbcType=INTEGER},
+      level_id = #{levelId,jdbcType=INTEGER},
+      balance = #{balance,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where buyer_id = #{buyerId,jdbcType=INTEGER}
+  </update>
+</mapper>

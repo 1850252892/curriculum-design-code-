@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.module.user.dao .RoleDao">
+    <select id="selectRoleByUserId" parameterType="java.lang.String" resultType="com.shop.module.user.entity.UserRole">
+          SELECT b.id, b.roleName, b.descrip
+          FROM tb_sys_ur a INNER JOIN tb_sys_role b on a.rid=b.id
+          where a.uid=#{uid,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertRole">
+        <selectKey keyProperty="id" resultType="java.lang.Integer" keyColumn="id">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into tb_sys_role(roleName,descrip)
+        values(#{roleName},#{descrip})
+    </insert>
+
+    <insert id="insertUr" parameterType="java.util.Map">
+        <selectKey keyProperty="id" resultType="java.lang.Integer" keyColumn="id">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into tb_sys_ur(uid,rid)
+        values(#{uid},#{rid})
+    </insert>
+</mapper>

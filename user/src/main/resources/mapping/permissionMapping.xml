@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.module.user.dao.PermissionDao">
+    <sql id="sql_select_per">
+        id, pid, `leave`, `type`, perName, descrip, desCode, url, `enable`, sortNum
+    </sql>
+    <sql id="sql_per_nid">
+        pid, `leave`, `type`, perName, descrip, desCode, url, `enable`, sortNum
+    </sql>
+
+    <select id="selectPermissionByUserId" parameterType="java.lang.String" resultType="com.shop.module.user.entity.UserPermission">
+          select p.id, p.pid, p.`leave`, p.`type`, p.perName, p.descrip, p.desCode, p.url, p.`enable`, p.sortNum
+          FROM tb_sys_ur a INNER JOIN tb_sys_rp b ON a.rid=b.rid INNER JOIN tb_sys_permission p ON b.pid=p.id
+          where a.uid=#{uid,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectPermissionByType" parameterType="java.lang.Integer" resultType="com.shop.module.user.entity.UserPermission">
+          select <include refid="sql_per_nid"/>
+          from tb_sys_permission
+          where `type`=#{type,jdbcType=INTEGER}
+
+    </select>
+
+    <insert id="insertPermission" parameterType="com.shop.module.user.entity.UserPermission">
+        <selectKey keyProperty="id" keyColumn="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into tb_sys_permission `(`<include refid="sql_per_nid" />`)`
+        values(#{pid},#{leave},#{type},#{perName},#{descrip},#{desCode},#{url},#{enable},#{sortNum})
+    </insert>
+
+    <insert id="insertRp" parameterType="java.util.Map">
+        <selectKey keyProperty="id" keyColumn="id" resultType="java.lang.Integer">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into tb_sys_rp(rid,pid)
+        values(#{rid},#{pid})
+    </insert>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.module.user.dao.UserDao">
+    <sql id="sql_user_column">
+        id, account, pwd, salt, nickname, createTime, isDel, isLock, lockTime, email, phone, remark
+    </sql>
+    <sql id="sql_user_nid">
+        account, pwd, salt, nickname, createTime, isDel, isLock, lockTime, email, phone, remark
+    </sql>
+    <select id="selectUserById" resultType="com.shop.module.user.entity.User" parameterType="java.lang.String">
+        select <include refid="sql_user_column" />
+        from tb_sys_user
+        where account=#{uid,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertUser"  parameterType="com.shop.module.user.entity.User">
+        <selectKey keyProperty="id"  resultType="java.lang.Integer" keyColumn="id">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into tb_sys_user <include refid="sql_user_nid"></include>
+        values(#{account},#{pwd},#{salt},#{nickname},#{crateTime}.#{isDel},#{isLock},#{lockTime},#{email},#{phone},#{remark})
+    </insert>
+</mapper>
