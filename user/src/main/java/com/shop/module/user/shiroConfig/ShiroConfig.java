@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import javax.servlet.Filter;
@@ -34,7 +35,7 @@ import java.util.Map;
  * Created by Administrator on 2017/12/11.
  */
 
-//@Configuration
+@Configuration
 public class ShiroConfig {
     @Autowired
     UserService userService;

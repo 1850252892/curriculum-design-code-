@@ -14,7 +14,7 @@ public interface IUserService {
     ServiceModel<String> addUser();
 
     //新建买家用户
-    ServiceModel<String> addBuyerUser(BaseUser baseUser);
+    ServiceModel<Integer> addBuyerUser(BaseUser baseUser);
 
     /**
      * 账号是否已使用
@@ -23,6 +23,12 @@ public interface IUserService {
      * @return
      */
     Boolean accountUse(String account,Integer type);
+
+    BaseUser selectBaseUser(BaseUser baseUser);
+
+    BaseUser selectBaseUserByAccountMapping(String account);
+
+    ServiceModel updateBaseUser(BaseUser baseUser);
 
     List<UserPermission> selectPermissionByUserId(String uid);
 

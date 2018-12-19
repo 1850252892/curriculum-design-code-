@@ -10,17 +10,15 @@ import com.shop.module.user.util.RedisUtil;
 import com.shop.module.user.util.emiltool.EmailService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-@RestController("/register/")
+@RestController
+@RequestMapping("/")
 public class UserRegController {
     static final String GET_VERCODE_TIME="verCodeTime_";
     static final String VERCODE="verCode_";
@@ -115,7 +113,7 @@ public class UserRegController {
             return responseModel;
         }
         String realVerCode= redisUtil.getObject(redisKey) +"";
-        if (realVerCode==null||realVerCode.equals("")||!realVerCode.equals(userModel.getVerCode())){
+        if (realVerCode==null||realVerCode.equals("")||!realVerCode.equals(verCode)){
             responseModel.setCode(400);
             responseModel.setMsg("验证码错误或已过期，请重新获取验证码!!!");
             return responseModel;
@@ -136,7 +134,7 @@ public class UserRegController {
             baseUser.setEmail(account);
         baseUser.setType(regType);
         //调用service方法
-        ServiceModel<String> regResult = userService.addBuyerUser(baseUser);
+        ServiceModel<Integer> regResult = userService.addBuyerUser(baseUser);
         if (!regResult.isSuccess()){
             responseModel.setCode(402);
             responseModel.setMsg(regResult.getErrMsg());
@@ -150,7 +148,7 @@ public class UserRegController {
         redisUtil.del(redisKey);
         responseModel.setCode(200);
         Map<String,String> map = new HashMap<>();
-        map.put("account",regResult.getData());
+        map.put("account",regResult.getData()+"");
         responseModel.setData(map);
         return responseModel;
     }

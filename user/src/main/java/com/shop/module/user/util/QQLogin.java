@@ -1,8 +1,12 @@
 package com.shop.module.user.util;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Component
@@ -19,7 +23,10 @@ public class QQLogin {
     private String redirect_rul;
     @Value("${shop.qqLogin.scope}")
     private String scope;
-    private String requestUrl;
+    @Value("${shop.qqLogin.getOpenIdUrl}")
+    private String QQ_GET_OPENID_URL;
+    @Value("${shop.qqLogin.getUerInfo}")
+    private String QQ_GET_USER_INFO_URL;
 
     public String getUrl() {
         return url;
@@ -65,7 +72,32 @@ public class QQLogin {
         return url+"?response_type="+response_type+"&client_id="+client_id+"&redirect_uri="+redirect_rul+"&scope="+scope;
     }
 
-    public void setRequestUrl(String requestUrl) {
-        this.requestUrl = requestUrl;
+    public String getOpenId(String accessToken){
+        String openIdRsult= HttpRequestUtil.sendGet(QQ_GET_OPENID_URL,"access_token="+accessToken);
+        if (openIdRsult.equals("e")){
+            return "e";
+        }
+        int start=openIdRsult.indexOf("(");
+        int end=openIdRsult.indexOf(")");
+        openIdRsult=openIdRsult.substring(start+1,end);
+        Map<String,String> openIdMap = (Map<String, String>) JSON.parse(openIdRsult);
+        if (openIdMap.containsKey("error")){
+            //请求错误
+            return "e";
+        }
+        String openId=openIdMap.get("openid");
+//        String clientId=openIdMap.get("client_id");
+        return openId;
+    }
+
+    public Map<String,String> getUserInfo(String accessToken,String openId){
+        String userInfoResult=HttpRequestUtil.sendGet(QQ_GET_USER_INFO_URL,"access_token="+accessToken+"&oauth_consumer_key="+client_id+"&openid="+openId);
+        Map<String,String> result=new HashMap<>();
+        if (userInfoResult.equals("e")){
+           result.put("e","");
+            return result;
+        }
+        result= (Map<String, String>) JSON.parse(userInfoResult);
+        return result;
     }
 }

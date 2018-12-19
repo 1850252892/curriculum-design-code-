@@ -14,4 +14,8 @@ public interface BaseUserMapper {
     int updateByPrimaryKeySelective(BaseUser record);
 
     int updateByPrimaryKey(BaseUser record);
+
+    BaseUser selectBaseUserBySelective(BaseUser baseUser);
+
+    BaseUser selectBaseUserByAccountMapping(String accountMapping);
 }

@@ -40,7 +40,7 @@ create table if not exists tab_tp_user( -- 第三方平台授权账号
   type int not null comment '账号所属平台：1 QQ',
   create_time datetime comment '创建时间',
   primary key (open_id)
-)
+);
 alter table tab_tp_user rename to tb_tp_user;
 
  create table if not exists tb_buyer( -- 买家表

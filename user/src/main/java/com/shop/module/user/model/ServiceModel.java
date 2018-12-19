@@ -32,4 +32,6 @@ public class ServiceModel<T> {
     public void setData(T data) {
         this.data = data;
     }
+
+
 }

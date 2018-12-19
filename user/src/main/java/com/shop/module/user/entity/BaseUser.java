@@ -132,4 +132,23 @@ public class BaseUser {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+    @Override
+    public String toString() {
+        return "BaseUser{" +
+                "userId=" + userId +
+                ", account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", truename='" + truename + '\'' +
+                ", userlogo='" + userlogo + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", qq='" + qq + '\'' +
+                ", status=" + status +
+                ", type=" + type +
+                ", lastLoginTime=" + lastLoginTime +
+                ", createTime=" + createTime +
+                '}';
+    }
 }

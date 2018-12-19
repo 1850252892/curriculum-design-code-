@@ -12,6 +12,8 @@ shop:
     client-id: 101523415
     redirect-url: http://www.teemor.xyz/egCallBack
     scope: all
+    getOpenIdUrl: https://graph.qq.com/oauth2.0/me
+    getUerInfo: https://graph.qq.com/user/get_user_info
 
 mybatis:
   mapper-locations: classpath:mapping/*.xml

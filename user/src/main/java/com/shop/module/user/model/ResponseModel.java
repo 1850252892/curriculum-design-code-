@@ -59,4 +59,5 @@ public class ResponseModel {
                 ", data=" + data +
                 '}';
     }
+
 }

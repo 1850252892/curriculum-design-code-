@@ -1,9 +1,11 @@
 package com.shop.module.user.shiroConfig;
 
+import com.shop.module.user.entity.BaseUser;
 import com.shop.module.user.entity.User;
 import com.shop.module.user.entity.UserPermission;
 import com.shop.module.user.entity.UserRole;
 import com.shop.module.user.service.IUserService;
+import com.shop.module.user.util.DateUtil;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -12,6 +14,8 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
@@ -19,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 public class UserRealm extends AuthorizingRealm {
+    public static final Logger log= LoggerFactory.getLogger(UserRealm.class);
     @Autowired
     IUserService userService;
 
@@ -28,11 +33,16 @@ public class UserRealm extends AuthorizingRealm {
         // 解密获得username，用于和数据库进行对比
         String username = String.valueOf(token);
 //        User user = userService.selectUserById(username);
-        System.out.println("----->>userInfo="+ username);
-//        if (user == null) {
-//            return null;
-//        }
-        String password="123456";
+        BaseUser selective=new BaseUser();
+        selective.setAccount(username);
+        BaseUser user=userService.selectBaseUser(selective);
+        if (user==null){
+            return null;
+        }
+        user.setLastLoginTime(DateUtil.newNowDate());//更新用户最后登录时间
+        userService.updateBaseUser(user);
+        String password=user.getPassword();
+        log.info("userInfo",user.toString());
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
               username, //用户名
                 password, //密码
@@ -67,7 +77,6 @@ public class UserRealm extends AuthorizingRealm {
         }
         // 将权限名称提供给info
         authorizationInfo.setStringPermissions(permissionNames);
-
         return authorizationInfo;
     }
 }
